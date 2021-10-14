@@ -12,14 +12,14 @@
                 <!-- <app-links></app-links> -->
                 <div class="sidenav-content">
                     <div class="over-y">
-                        <div class="product" v-for="(product, index) in products" :key="index">
+                        <div class="product" v-for="(item, index) in products" :key="index">
                             <div class="product-item">
 
-                                <img class="product-image" :src="product.image" />
+                                <img class="product-image" :src="item.image" />
                                 
                                 <div class="prod">
                                     <div class="product-info">
-                                        <h5 class="product-title">{{ product.name }}</h5>
+                                        <h5 class="product-title">{{ item.name }}</h5>
                                         <div>
                                             <div class="product-quantity">
                                                 <span>1</span>
@@ -35,7 +35,7 @@
                                     
                                     <div class="product-price">
                                         <div class="remove-product">&#128473;</div>
-                                        <p class="price"><span>{{ product.priceMember | toCurrency }}</span></p>
+                                        <p class="price"><span>{{ 32 | toCurrency }}</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -46,7 +46,7 @@
                     <div class="sidenav-footer">
                         <div class="subtotal">
                             <span class="subtotal-text">subtotal</span>
-                            <span class="price">{{ 55.4 | toCurrency }}</span>
+                            <span class="price">{{ 233 | toCurrency }}</span>
                         </div>
                         <button class="btn btn-order">Finalizar pedido</button>
                     </div>
@@ -58,48 +58,59 @@
     </div>
 </template>
 
-<script lang="ts">
+<script>
 
-    import Vue from 'vue'
-
-    // import AppLinks from '~/components/AppLinks'
-
-    export default Vue.extend({
-
-        // components: { AppLinks },
+    export default {
 
         data() {
             return {
-            products: [
-                {
-                "available": true,
-                "image": "https://www.wine.com.br/cdn-cgi/image/q=99,f=auto,h=176/assets-images/produtos/23315-01.png",
-                "name": "Partridge Flying Malbec 2019",
-                "priceMember": 34.9,
-                "pricePromotional": 41.06,
-                "priceStock": 59.9
-                },
-                {
-                "available": true,
-                "image": "https://www.wine.com.br/cdn-cgi/image/q=99,f=auto,h=176/assets-images/produtos/19728-01.png",
-                "name": "Oxford Landing Cabernet Shiraz 2016",
-                "priceMember": 47.9,
-                "pricePromotional": 56.35,
-                "priceStock": 120.9
-                },
-                {
-                "available": false,
-                "image": "https://www.wine.com.br/cdn-cgi/image/q=99,f=auto,h=176/assets-images/produtos/23386-01.png",
-                "name": "Pedro Teixeira Tinto",
-                "priceMember": 31.9,
-                "pricePromotional": 37.53,
-                "priceStock": 52.9
-                }
-            ]
+                products: [
+                    {
+    "available": true,
+    "image": "https://www.wine.com.br/cdn-cgi/image/q=99,f=auto,h=176/assets-images/produtos/19728-01.png",
+    "name": "Oxford Landing Cabernet Shiraz 2016",
+    "priceMember": 47.9,
+    "pricePromotional": 56.35,
+    "priceStock": 120.9
+    },
+                    {
+    "available": true,
+    "image": "https://www.wine.com.br/cdn-cgi/image/q=99,f=auto,h=176/assets-images/produtos/19728-01.png",
+    "name": "Oxford Landing Cabernet Shiraz 2016",
+    "priceMember": 47.9,
+    "pricePromotional": 56.35,
+    "priceStock": 120.9
+  },
+  {
+    "available": true,
+    "image": "https://www.wine.com.br/cdn-cgi/image/q=99,f=auto,h=176/assets-images/produtos/23315-01.png",
+    "name": "Partridge Flying Malbec 2019",
+    "priceMember": 34.9,
+    "pricePromotional": 41.06,
+    "priceStock": 59.9
+  },
+  {
+    "available": true,
+    "image": "https://www.wine.com.br/cdn-cgi/image/q=99,f=auto,h=176/assets-images/produtos/19728-01.png",
+    "name": "Oxford Landing Cabernet Shiraz 2016",
+    "priceMember": 47.9,
+    "pricePromotional": 56.35,
+    "priceStock": 120.9
+  },
+  {
+    "available": true,
+    "image": "https://www.wine.com.br/cdn-cgi/image/q=99,f=auto,h=176/assets-images/produtos/19728-01.png",
+    "name": "Oxford Landing Cabernet Shiraz 2016",
+    "priceMember": 47.9,
+    "pricePromotional": 56.35,
+    "priceStock": 120.9
+  }
+]
             }
         },
 
         methods: {
+            
             hideSidebar() {
                 this.$store.dispatch('nav/toggleSidebar')
             }
@@ -111,51 +122,23 @@
                 return this.$store.getters['nav/toggleSidebar']
             }
 
-        }
+        },
 
-    })
+
+    }
 
 </script>
 
 
 <style scoped>
 
-    .sidenav-container {
-        height: 100%;
-        width: 100%;
-    }
-
-    .sidenav {
-        height: 100%;
-        width: 300px;
-        background-color: #F5F5F5;;
-        z-index: 10000;
-        position: fixed;
-        top: 0;
-        right: 0;
-        box-sizing: border-box;
-    }
-
-    .sidenav-header,
-    .sidenav-footer 
-    {
-        background-color: #fff;
-        padding: 23px 15px;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .sidenav-header {
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .sidenav-content {
-        flex-grow: 1;
-        align-content: space-between;
-    }
-
     .over-y {
         overflow-y: auto;
         height: calc(100vh - 185px);
+    }
+
+    .over-y::-webkit-scrollbar {
+      display: none;
     }
 
     .sidenav-footer {
@@ -251,9 +234,6 @@
         }
     }
     
-
-    /* ÃQUI */
-
     .product-area {
     margin: 38px -15px 30px -15px;
     display: -ms-flexbox;
