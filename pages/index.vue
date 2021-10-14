@@ -215,10 +215,6 @@
       align-self: center;
       justify-self: center;
     }
-
-    /* .product-image {
-      height: 100%;
-    } */
     
     .product-card {
       display: grid;
@@ -238,7 +234,7 @@
         display: flex;
         overflow-x: auto;
         overflow-y: hidden;
-        width: 465px;
+        width: 756px;
         height: auto;
         -ms-flex-wrap: unset;
         flex-wrap: unset;
@@ -294,14 +290,17 @@
       {
         display: none;
       }
-      .product-card {
-        max-height: auto;
-      }
 
       .product-image {
         display: block;
         object-fit: cover;
         align-self: center;
+      }
+    }
+
+    @media (max-width: 480px){
+      .product-area {
+        width: 465px;
       }
     }
   }
