@@ -2,8 +2,8 @@
   <div class="content">
 
     <div class="banner-box">
-      <img class="img-full" src="~/assets/images/banner-full.png" alt="banner">
-      <img class="img-responsive" src="~/assets/images/banner-responsive.png" alt="banner">
+      <img class="banner-full" src="~/assets/images/banner-full.png" alt="banner">
+      <img class="banner-responsive" src="~/assets/images/banner-responsive.png" alt="banner">
     </div>
 
     <div class="product-area">
@@ -12,110 +12,82 @@
 
             <img class="product-image" :src="product.image" />
             
-            <div class="article-details f-1">
-              <h4 class="product-title">{{ product.name }}</h4>
+            <div class="article-details">
+              <div><h4 class="product-title">{{ product.name }}</h4>
               <div v-if="product.available"  class="product-price">
 
                 <p class="product-author">{{ product.priceStock | toCurrency }}</p>
 
                 <div class="member">
-                  <p>Sócio Wine</p>
+                  <div>
+                    <p>Sócio</p>
+                    <p>Wine</p>
+                  </div>
                   <p class="price"><span>{{ product.priceMember | toCurrency }}</span></p>
                 </div>
+                
+                <p class="price-responsive"> Não sócio {{ product.priceStock | toCurrency }}</p>
 
-                <!-- <p class="product-description">{{ product.pricePromotional | toCurrency }}</p> -->
               </div>
+              </div>
+              
 
               <div>
-                <button v-if="product.available" class="btn btn-add f-1">Adicionar</button>
+                <button v-if="product.available" class="btn btn-add f-1" @click="addToCart(index, 1)">Adicionar</button>
                 <button v-else class="btn btn-non-available f-1">Esgotado</button>
               </div>
 
             </div>
           </article>
+          <div>
+            <button v-if="product.available" class="btn btn-add-responsive f-1" @click="addToCart(index, 1)">Adicionar</button>
+            <button v-else class="btn btn-non-available-responsive f-1">Esgotado</button>
+          </div>
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
+<script>
 
-export default Vue.extend({
-  data() {
-    return {
-      products: [
-        {
-          "available": true,
-          "image": "https://www.wine.com.br/cdn-cgi/image/q=99,f=auto,h=176/assets-images/produtos/23315-01.png",
-          "name": "Partridge Flying Malbec 2019",
-          "priceMember": 34.9,
-          "pricePromotional": 41.06,
-          "priceStock": 59.9
-        },
-        {
-          "available": true,
-          "image": "https://www.wine.com.br/cdn-cgi/image/q=99,f=auto,h=176/assets-images/produtos/19728-01.png",
-          "name": "Oxford Landing Cabernet Shiraz 2016",
-          "priceMember": 47.9,
-          "pricePromotional": 56.35,
-          "priceStock": 120.9
-        },
-        {
-          "available": false,
-          "image": "https://www.wine.com.br/cdn-cgi/image/q=99,f=auto,h=176/assets-images/produtos/23386-01.png",
-          "name": "Pedro Teixeira Tinto",
-          "priceMember": 31.9,
-          "pricePromotional": 37.53,
-          "priceStock": 52.9
-        }
-      ]
+  export default {
+
+    methods: {
+      addToCart(item) {
+        this.$store.commit('addToCart', item);
+      }
+    },
+    async asyncData({ $http }) {
+      const products = await $http.$get('https://run.mocky.io/v3/908ec5b5-1e5a-4602-9008-47719f7c6759')
+
+      return { products }
     }
   }
-})
 </script>
 
 <style scoped>
-  .content {
-    margin-top: 62px;
-  }
-
-  .img-full, 
-  .img-responsive {
-    width: 100%;
-  }
-
-  .img-full {
-    display: block;
-  }
-
-  .img-responsive {
-    display:none;
-  }
-
-  @media (max-width: 767px){
-    .img-full{
-      display:none;
-    }
-
-    .img-responsive{
-      display:block;
-    }
-  }
+  
 
 
   /*  */
   .product-area {
-    margin: 38px -15px 30px -15px;
+    margin: 38px -10px 30px -10px;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
   }
+  
+  @media (max-width: 991px){
+    .product-area {
+      display: flex;
+      flex-wrap: unset;
+    }
+  }
 
   .prd {
     position: relative;
-    width: 100%;
+    /* width: 100%; */
     padding: 10px;
     box-sizing: border-box;
   }
@@ -134,7 +106,6 @@ export default Vue.extend({
     background: #fff;
     box-shadow: 0 0.1875rem 1.5rem rgba(0, 0, 0, 0.2);
     border-radius: 0.375rem;
-    overflow: hidden;
     padding: 8px;
     
     max-height: 210px;
@@ -142,16 +113,17 @@ export default Vue.extend({
 
   .product-image {
     display: block;
-    /* width: 100%; */
     object-fit: cover;
     align-self: center;
     max-height: 176px;
   }
 
-  .f-1{
-    font-family: Lato;
+  .article-details{
     font-style: normal;
     font-weight: bold;
+    
+    display: grid;
+    align-content: space-between;
   }
 
   .product-title {
@@ -161,6 +133,7 @@ export default Vue.extend({
     display: flex;
     align-items: center;
     letter-spacing: -0.2px;
+    margin: 0 0 15px 0;
 
     color: #1D1D1B;
   }
@@ -186,6 +159,10 @@ export default Vue.extend({
     font-size: 14px;
   }
 
+  .price-responsive {
+    display: none;
+  }
+
   .product-author {
     font-size: 12px;
     line-height: 16px;
@@ -208,29 +185,30 @@ export default Vue.extend({
     font-size: 14px;
     line-height: 17px;
     color: #FFFFFF;
+    
+    cursor: pointer;
   }
 
-  .btn-add {
+  .btn-add,
+  .btn-add-responsive
+  {
     background: #B6116E;
   }
 
-  .btn-non-available {
+  .btn-non-available,
+  .btn-non-available-responsive
+  {
     background: #A0A0A0;
   }
 
-  @media (max-width: 40rem) {
-    .product-card {
-      flex-wrap: wrap;
-    }
+  .btn-add-responsive,
+  .btn-non-available-responsive
+   {
+    display: none;
+    margin-top: 10px;
   }
 
   @supports (display: grid) {
-    /* body {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-gap: 0.625rem;
-      grid-template-areas: ". main main ." ". main main .";
-    } */
     
     #root {
       grid-area: main;
@@ -248,10 +226,82 @@ export default Vue.extend({
       grid-template-rows: 1fr;
     }
     
-    @media (max-width: 40rem) {
+    @media (max-width: 767px) {
+      .banner-full{
+        display:none;
+      }
+
+      .banner-responsive{
+        display:block;
+      }
+      .product-area {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 465px;
+        height: auto;
+        -ms-flex-wrap: unset;
+        flex-wrap: unset;
+        margin: 38px -10px 30px -10px;
+      }
+
+      .product-area::-webkit-scrollbar {
+        display: none;
+      }
       .product-card {
-        grid-template-columns: auto;
         grid-template-rows: 12rem 1fr;
+        flex-wrap: wrap;
+        display: inline-table;
+        width: 244px;    
+        min-height: 340px;
+        
+        text-align: center;
+        text-align: -webkit-center;
+      }
+
+      .product-title {
+        font-size: 16px;
+        display: block;
+      }
+
+      .article-details {
+        text-align: center;
+      }
+      
+      .btn-add-responsive,
+      .btn-non-available-responsive
+      {
+        display: block;
+      }
+
+      .price-responsive{
+        display: block;
+      }
+
+      .member {
+        width: 100%;
+        display: inline-flex;
+        place-content: center;
+      }
+
+      .member .price{
+        display: flex;
+        place-self: end;
+      }
+
+      .btn-add, 
+      .btn-non-available 
+      {
+        display: none;
+      }
+      .product-card {
+        max-height: auto;
+      }
+
+      .product-image {
+        display: block;
+        object-fit: cover;
+        align-self: center;
       }
     }
   }
