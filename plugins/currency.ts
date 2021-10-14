@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-Vue.filter('toCurrency', function (value: number) {
+Vue.filter('toCurrency', function (value: any) {
     if (typeof value !== "number") {
         return value;
     }
